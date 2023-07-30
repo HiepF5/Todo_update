@@ -1,0 +1,41 @@
+.task{
+  background: white;
+  border-radius: 4px;
+  min-height: 5rem;
+  color: black;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  cursor: move;
+}
+.status{
+  font-size: small;
+  background: var(--COLOR-GRAY-LIGHT);
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+.bottomWrapper{
+  display: flex;
+  justify-content: space-between;
+}
+.PLANNED{
+  background: var(--COLOR-GRAY-LIGHT);
+}
+.ONGOING{
+  background:var(--COLOR-ONGOING);
+}
+.DONE{
+  background: var(--COLOR-DONE);
+}
+.task img{
+  height: 1.25rem;
+  cursor: pointer;
+
+}
+.disabled{
+  pointer-events: none;
+  /* Hoặc */
+  opacity: 0.5;
+}

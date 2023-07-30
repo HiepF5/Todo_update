@@ -1,0 +1,28 @@
+.App{
+ text-align: center;  
+}
+.container{
+  background:var(--COLOR-GRAY);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+
+}
+.total_count{
+  font-size: small;
+  background: var(--COLOR-COUNT);
+  padding: 1rem;
+  border-radius: 4px;
+  cursor: default;
+}
+.btn-add{
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: small;
+  background: var(--COLOR-BTN);
+  color: var(--COLOR-WHITE);
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
