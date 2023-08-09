@@ -4,13 +4,13 @@ import edit from '../assets/edit-btn.svg'
 import './Task.css'
 import classNames from 'classnames'
 import { useTaskStore } from '../zustand/TaskStore'
-function Task({ title }) {
-  const task = useTaskStore((store) => store.tasks.find((task) => task.title === title))
+function Task({ task }) {
+  // const task = useTaskStore((store) => store.tasks.find((task) => task.title === title))
+
   const deleteTask = useTaskStore((store) => store.deleteTask)
   const editTask = useTaskStore((store) => store.editTask)
   const openEditTask = useTaskStore((store) => store.openEditTask)
   const [textEdit, setTextEdit] = useState(task.title)
-  const [show, setShow] = useState(task.isEditing)
   const setDraggedTask = useTaskStore((store) => store.setDraggedTask)
 
   const handleDelete = () => {
@@ -31,25 +31,23 @@ function Task({ title }) {
     setTextEdit(event.target.value)
   }
 
-  const [option, setOption] = useState(task.isEditing ? 'disabled' : '')
-  const onOption = () => {
-    setOption(task.isEditing ? 'disabled' : '')
-  }
+  // const [option, setOption] = useState(task.isEditing ? 'disabled' : '')
+  // const onOption = () => {
+  //   setOption(task.isEditing ? 'disabled' : '')
+  // }
+
   return (
     <div
       className='task'
       draggable
-      onDragStart={() => {
-        setDraggedTask(task.title)
+      onDragStart={(e) => {
+        // console.log(e)
+        setDraggedTask(task)
       }}
     >
       <div>
-        <input type='text' value={textEdit} onChange={onEdit} className={classNames(option)} />
-        {show && (
-          <button onClick={saveEdit} className={classNames(option)}>
-            Save
-          </button>
-        )}
+        <input type='text' value={textEdit} onChange={onEdit} readOnly={!task.isEditing} className={!task.isEditing?'disabled':''}/>
+        {task.isEditing && <button onClick={saveEdit}>Save</button>}
       </div>
       <div className='bottomWrapper'>
         <div>

@@ -10,11 +10,13 @@ function App() {
   const addTask = useTaskStore((store) => store.addTask)
   const [show, setShow] = useState(false)
   const [text, setText] = useState('')
-  const setFilter = useTaskStore((store) => store.setFilter)
-  const filteredTasks = useTaskStore((state) => state.filteredTasks)
-  const filter = useTaskStore((state) => state.filter)
-  console.log(filteredTasks())
-  console.log(filter)
+  const text2= useTaskStore();
+  console.log(text2)
+  // const setFilter = useTaskStore((store) => store.setFilter)
+  // const filteredTasks = useTaskStore((state) => state.filteredTasks)
+  // const filter = useTaskStore((state) => state.filter)
+
+  const [keySearch, setKeySearch] = useState('')
   const handleShow = () => {
     setShow(true)
   }
@@ -26,21 +28,21 @@ function App() {
     setText(event.target.value)
     console.log(setText(event.target.value))
   }
-  const handleFilter = (event) => {
-    setFilter(event.target.value)
-    console.log(setFilter(event.target.value))
-  }
+  // const handleFilter = (event) => {
+  //   setFilter(event.target.value)
+  //   console.log(setFilter(event.target.value))
+  // }
 
   const onFilter = () => {}
   return (
     <div className='App'>
       <h1>App Todo List Drag-and-Drop</h1>
       <div className='container'>
-        <input placeholder='Enter...' onChange={handleFilter} />
+        <input placeholder='Enter...' onChange={(e) => setKeySearch(e.target.value)} value={keySearch} />
         <button onClick={onFilter}>Tìm kiếm</button>
-        <TaskFormColumn state='PLANNED' />
-        <TaskFormColumn state='ONGOING' />
-        <TaskFormColumn state='DONE' />
+        <TaskFormColumn state='PLANNED' keySearch={keySearch} />
+        <TaskFormColumn state='ONGOING' keySearch={keySearch} />
+        <TaskFormColumn state='DONE' keySearch={keySearch} />
         <button className='btn-add' onClick={handleShow}>
           Add
         </button>
@@ -57,13 +59,13 @@ function App() {
       )}
       <div>
         <h2>Kết quả tìm kiếm:</h2>
-        {filteredTasks() && (
+        {/* {filteredTasks() && (
           <ul>
             {filteredTasks().map((task) => (
               <ShowTaskFilter key={task.id} title={task.title} state={task.state} />
             ))}
           </ul>
-        )}
+        )} */}
       </div>
     </div>
   )

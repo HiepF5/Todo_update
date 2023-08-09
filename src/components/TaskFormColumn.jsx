@@ -4,14 +4,22 @@ import Task from './Task'
 import { useTaskStore } from '../zustand/TaskStore'
 import classNames from 'classnames'
 
-function TaskFormColumn({ state }) {
-  const tasks = useTaskStore((store) => store.tasks.filter((task) => task.state === state))
+function TaskFormColumn({ state, keySearch }) {
+  const tasks = useTaskStore((store) =>
+    store.tasks.filter((task) => task.state === state && task.title.includes(keySearch))
+  )
 
   const [drop, setDrop] = useState(false)
   const setDraggedTask = useTaskStore((store) => store.setDraggedTask)
   const draggedTask = useTaskStore((store) => store.draggedTask)
   const moveTask = useTaskStore((store) => store.moveTask)
   const countTasks = useTaskStore((store) => store.countTasks)
+  const indexStatus = {
+    PLANNED: 1,
+    ONGOING: 2,
+    DONE: 3
+  }
+  console.log('render' + state)
   return (
     <>
       <div
@@ -26,7 +34,11 @@ function TaskFormColumn({ state }) {
         }}
         onDrop={(e) => {
           setDrop(false)
-          moveTask(draggedTask, state)
+          console.log(draggedTask.state)
+          console.log(state)
+          console.log(indexStatus[draggedTask.state])
+          console.log(indexStatus[state])
+          if (indexStatus[draggedTask.state] < indexStatus[state]) {moveTask(draggedTask, state)}
           setDraggedTask(null)
         }}
       >
@@ -35,7 +47,7 @@ function TaskFormColumn({ state }) {
         </div>
         <div>
           {tasks.map((task) => {
-            return <Task key={task.id} title={task.title} />
+            return <Task key={task.id} task={task} />
           })}
         </div>
         <div className='status_count'>

@@ -2,14 +2,18 @@ import { produce } from 'immer'
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 const taskStore = (set, get) => ({
-  tasks: [],
+  tasks: [
+    { id: 0, title: 'Task 1', state: 'PLANNED', isEditing: false },
+    { id: 1, title: 'Task 2', state: 'ONGOING', isEditing: false },
+    { id: 2, title: 'Task 3', state: 'DONE', isEditing: false }
+  ],
   draggedTask: null,
   filter: '',
   addTask: (title, state) =>
     set(
       produce((store) => {
         let nextId = store.tasks.length
-        store.tasks.push({ id: nextId++, title, state, isEditing: true })
+        store.tasks.push({ id: nextId++, title, state, isEditing: false })
       }),
       false,
       'addTask'
@@ -46,10 +50,10 @@ const taskStore = (set, get) => ({
       false,
       'openEditTask'
     ),
-  setDraggedTask: (title) => set({ draggedTask: title }),
-  moveTask: (title, state) =>
+  setDraggedTask:(task) => set({ draggedTask: task }),
+  moveTask: (newTask, state) =>
     set(
-      (store) => ({ tasks: store.tasks.map((task) => (task.title === title ? { ...task, title, state } : task)) }),
+      (store) => ({ tasks: store.tasks.map((task) => (task.id === newTask.id ? { ...newTask, state } : task)) }),
       false,
       'moveTask'
     ),
@@ -65,8 +69,8 @@ const taskStore = (set, get) => ({
   },
   setFilter: (filter) => set({ filter }),
   filteredTasks: () => {
-    const filter = get().filter.toLowerCase();
-    return get().tasks.filter((task) => task.title.toLowerCase().includes(filter));
+    const filter = get().filter.toLowerCase()
+    return get().tasks.filter((task) => task.title.toLowerCase().includes(filter))
   },
   setSort: (sort) => set({ sort }),
   setSortBy: (sortBy) => set({ sortBy }),
@@ -76,4 +80,4 @@ const taskStore = (set, get) => ({
   setSortByDate: (sortByDate) => set({ sortByDate })
 })
 
-export const useTaskStore = create(persist(devtools(taskStore), { name: 'Task Store' }))
+export const useTaskStore = create(devtools(taskStore), { name: 'Task Store' })
